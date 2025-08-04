@@ -1,0 +1,6 @@
+apiVersion: v2
+name: template-deep-dive
+description: A Helm chart for deploying NGINX demo for K8S
+type: application
+version: 0.1.1
+appVersion: 0.1.0

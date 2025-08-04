@@ -1,0 +1,4 @@
+list: 
+  values:
+    example: {{ toYaml (list 1 2 3) | nindent 6 }}
+my-dict: {{ dict "primitive" "my string" "complex" (dict "key1" "key2") | toYaml | nindent 2 }}

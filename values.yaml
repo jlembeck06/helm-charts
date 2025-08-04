@@ -1,0 +1,49 @@
+## @param customName Custom name to set a custom resource name
+customName: 'NginxDemo'
+
+## @param replicaCount Number of replicas of Nginx of deployment
+replicaCount: 3
+
+
+## Setting for nginx image
+
+## @param image.name Name of the Nginx image
+## @param image.tag Tag of the Nginx image
+image:
+  name: nginx
+  tag: 1.29.0
+
+## Setting for Nginx image container security context
+## @param securityContext.user 
+## @param securityContext.fsGroup
+
+securityContext:
+  enabled: true
+  runAsUser: 1000
+  fsGroup: 2000
+
+containers:
+  name: nginx-container
+
+
+## NGINX container port
+##
+## @param containerPort Port of the Nginx container
+
+containerPort:
+  http: 80
+
+
+## Setting for nginx services
+##
+
+## @param services[*].enabled Enable the Nginx service
+## @param services[*].type Type of the Nginx service
+## @param services[*].port Port of the Nginx service for receiving traffic
+services: 
+  svc1:
+    type: ClusterIP
+    port: 80
+  svc2:
+    type: NodePort
+    port: 30000

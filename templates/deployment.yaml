@@ -1,0 +1,35 @@
+{{- if and .Values.securityContext .Values.securityContext.enabled -}}
+{{- $_ := required "securityContext.runAsUser is required when securityContext.enabled is true" .Values.securityContext.runAsUser -}}
+{{- $_ := required "securityContext.fsGroup is required when securityContext.enabled is true" .Values.securityContext.fsGroup -}}
+{{- if int .Values.securityContext.runAsUser | eq 0 -}}
+{{- fail "\n\nInvalid value for: securityContext.runAsUser. \n\n Container cannot be run as root users.\n\n Please provide the specific grant > 0" -}}
+{{- end -}}
+{{- end -}}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "templating-deep-dive.labels.fullname" . }}
+  labels: {{ include "templating-deep-dive.selectorLabels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels: {{ include "templating-deep-dive.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{ include "templating-deep-dive.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ .Values.containers.name }}
+        image: {{ .Values.image.name }}:{{ .Values.image.tag }}
+        {{- with .Values.securityContext | default dict }}
+        {{- if and (hasKey . "enabled") .enabled }}
+        securityContext:
+          runAsUser: {{ .runAsUser }}
+          fsGroup: {{ .fsGroup }}
+        {{- end }}
+        {{- end }}
+        {{- if .Values.services | default dict | len }}
+        ports:
+        - containerPort: {{ .Values.containerPort.http }}
+        {{- end }}
