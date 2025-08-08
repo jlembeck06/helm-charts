@@ -1,3 +1,11 @@
+# This helm chart will implement a JS API with a PostgreSQL database:
+
+- Methods: post, get, put, delete
+
+- Path: /api/kv
+
+- Variables: key, value
+
 # Update and build dependency
 helm dependency update
 
