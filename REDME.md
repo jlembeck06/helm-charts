@@ -1,0 +1,1 @@
+This repository contains Helm charts and related files for Kubernetes deployments. Inside, you'll find directories for individual charts, each with templates, values files, and Chart.yaml. 
